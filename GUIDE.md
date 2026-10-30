@@ -90,7 +90,9 @@ git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소
 | 맡긴 작업이 멈춘 것 같다 | 승인 대기인지 먼저 본다. 승인 창은 기다리기만 해서는 진행되지 않는다 |
 | 읽기 명령까지 실패한다(샌드박스 오류) | 승인해서 실행한다. 계속 막히면 필요한 파일을 내가 열어 보여 준다 |
 | `$이름`에 반응이 없다 | `/skills`로 확인하고, 없으면 `/new`. 그래도 안 되면 "`.agents/skills/<이름>/SKILL.md`를 읽고 따라라" |
-| 미리보기가 안 열린다 | 서버 오류·종료 → 실제 포트 → 0.0.0.0 바인딩 → 경로 순서로 본다. `ss -ltnp \| grep <포트>`가 `127.0.0.1`이면 localhost에만 열린 것이다 |
+| 미리보기가 안 열린다 | 서버 오류·종료 → 실제 포트 → 0.0.0.0 바인딩 → 경로 순서로 본다. `ss -ltnp \| grep <포트>`가 `127.0.0.1`이면 localhost에만 열린 것이다. 'Blocked request'나 400 Invalid HTTP_HOST면 아래 표의 Host 허용 설정이다 |
+| 화면은 뜨는데 데이터가 안 온다 | 화면이 `http://localhost:<포트>`로 API를 부르고 있다. 브라우저는 내 PC라 샌드박스의 localhost에 닿지 않는다. Codex에 "API 주소를 같은 출처의 상대 경로(`/api/…`)로 바꾸고 dev 서버 프록시(또는 한 서버에서 함께 서빙)로 넘겨라" |
+| 요구 문서가 README가 아니다(PDF·docx·xlsx) | Codex가 바로 읽지 못할 수 있다. 1번 터미널에서 텍스트로 뽑아 docs/에 둔다: PDF `pdftotext <파일> docs/요구.txt`(없으면 내가 열어서 복사), docx·xlsx `unzip -p <파일> word/document.xml \| sed 's/<[^>]*>/ /g' > docs/요구.txt`(xlsx는 `xl/sharedStrings.xml`). 지시문의 'README'는 그 파일로 읽는다 |
 | 맥락이 무겁다 | 커밋 직후라면 `$handoff` → `/new`, 작업 도중이면 `/compact` |
 | 결정이 모호하다 | 되돌리기 비싼 것(범위, 구조, 데이터 모델, 제약)만 묻는다. 싼 것은 기본값으로 진행하고 DECISIONS에 가정으로 남긴다 |
 | 외부 코드가 필요하다 | /tmp/refs에 받는다. 작업 폴더에는 넣지 않는다 |
@@ -115,11 +117,11 @@ MCP가 없어도 web_search, `npm view <패키지> version`, `--help`, `node_mod
 
 | 종류 | 명령 |
 | --- | --- |
-| Vite | `npm run dev -- --host 0.0.0.0 --port 3000` |
-| Next.js | `npx next dev -H 0.0.0.0 -p 3000` |
+| Vite | `npm run dev -- --host 0.0.0.0 --port 3000` + vite.config에 `server: { allowedHosts: true }`(없으면 미리보기 Host를 막아 'Blocked request' 화면) |
+| Next.js | `npx next dev -H 0.0.0.0 -p 3000`. 화면이 비고 콘솔에 cross-origin 차단이 뜨면 next.config의 `allowedDevOrigins`에 미리보기 호스트 |
 | Node·Express | `app.listen(3000, '0.0.0.0')` |
 | 정적 파일 | `python3 -m http.server 3000 --bind 0.0.0.0` |
 | FastAPI | `uvicorn main:app --host 0.0.0.0 --port 8000` |
 | Flask | `flask run --host 0.0.0.0 --port 5000` |
-| Django | `python manage.py runserver 0.0.0.0:8000` |
-| Streamlit | `streamlit run app.py --server.address 0.0.0.0` |
+| Django | `python manage.py runserver 0.0.0.0:8000` + settings.py `ALLOWED_HOSTS = ['*']`(없으면 400 Invalid HTTP_HOST) |
+| Streamlit | `streamlit run app.py --server.address 0.0.0.0 --server.headless true`(첫 실행의 이메일 입력 대기를 건너뛴다, 포트 8501) |
