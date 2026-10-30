@@ -34,7 +34,7 @@ git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소
 
 | 순서 | 어디서 | 할 일 | 보여야 할 것 |
 | --- | --- | --- | --- |
-| 1 | A | `codex` → 폴더 신뢰 → `/status` → `/model`(추론 강도 Medium) → `/skills` | 승인 정책·샌드박스·모델, 스킬 8개 |
+| 1 | A | `codex` → 폴더 신뢰 → `/status` → `/model`(추론 강도 Medium) → `/skills` | 승인 정책·샌드박스·모델, 남은 사용 한도, 스킬 8개 |
 | 2 | A | docs/PROMPTS.md의 '부트스트랩' | SPEC에 필수조건, 첫 커밋, `git status` 깨끗 |
 | 3 | B | `codex` → `/model` → 'B 탭 시작' + `$unknowns scan` | docs/research/에 결과 파일 |
 | 4 | A | `$interview` → 첫 라운드 질문을 담당자에게 | 질문 3개 이하 |
@@ -52,11 +52,11 @@ git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소
 | 정의 | `$interview` 라운드. 답은 `[실무자] …`, 내 생각은 `[내 메모] …`로 붙여 넣는다 | 인터뷰 2라운드쯤 `$unknowns`(INTERVIEW.md 기준). README가 짧을수록 일찍 | INTERVIEW.md, SPEC 초안 |
 | 범위 합의 | `/plan`에서 PROMPTS의 '기본 품질과 범위 밖' → 고르기 → 'Yes, implement'(문서만 고친다) → `$spec-check` | SPEC 초안이 나오면 `$unknowns` | SPEC, docs/research/ |
 | 설계·분해 | `/plan`에서 PROMPTS의 '설계·분해'(research/·REFERENCES도 읽는다) → 'No, stay' → Shift+Tab, '계획 반영' | 비싼 부품이 보이면 설계·분해 전에 `$oss-scout <부품>`. 런타임이 미정이면 "브라우저·Node 각 1개" | PLAN.md, DECISIONS.md, REFERENCES.md |
-| 첫 동작판 | 작업 하나씩: 테스트 → 커밋(EXPLAIN 4줄을 같은 커밋에) | — | 처음부터 끝까지 돌아가는 최소판 |
+| 첫 동작판 | '작업 지시 틀'로 작업 1(끝까지 도는 가장 얇은 판): 테스트 → 커밋(EXPLAIN 4줄을 같은 커밋에) → PROMPTS '프로젝트 맥락 반영' | — | 처음부터 끝까지 돌아가는 최소판 |
 | 중간 점검 | 지적은 PLAN의 새 작업으로 | `$review-gate quick` | REVIEW.md |
 | 반복 구현 | PLAN 작업 반복. 맥락이 무거우면 커밋 직후 `$handoff` → `/new` | 새로 모르는 게 생기면 `$unknowns` | 커밋들 |
 | 기능 동결 | 새 기능을 더하지 않는다. `$spec-check`, 리뷰 지적 수정 | `$review-gate` | REVIEW.md |
-| 정리 | README·EXPLAIN 정리, 최종 커밋 | `$explain` | QA-PREP.md |
+| 정리 | PROMPTS '결과 문서'(README가 요구한 문서, 실행 방법) → 최종 커밋 | `$explain` | QA-PREP.md |
 | 작업을 끝마치기 10분 전 | PROMPTS의 '마무리 점검' → 미리보기에서 핵심 흐름 → 에디터 '저장됨' 확인 | 종료 | — |
 
 - B는 코드·SPEC·PLAN·DECISIONS·EXPLAIN을 고치지 않고 커밋하지 않는다. 커밋은 A만 하고, B가 쓴 docs 파일도 A의 다음 커밋에 함께 들어간다.
