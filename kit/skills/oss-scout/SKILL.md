@@ -1,6 +1,6 @@
 ---
 name: oss-scout
-description: 과제에 쓸 공개 오픈소스를 키 없이 찾고(웹 검색, GitHub 검색 API, 패키지 레지스트리), 후보를 /tmp/refs에 받아 서브에이전트로 나눠 읽힌 뒤, 검증한 비교를 docs/REFERENCES.md에 남긴다. 사용자가 $oss-scout로 부를 때만 쓴다.
+description: 과제에 쓸 공개 오픈소스를 키 없이 찾고(웹 검색, awesome 목록, GitHub 검색 API, 패키지 레지스트리), 후보를 /tmp/refs에 받아 서브에이전트로 나눠 읽힌 뒤, 검증한 비교를 docs/REFERENCES.md에 남긴다. 사용자가 $oss-scout로 부를 때만 쓴다.
 disable-model-invocation: true
 ---
 
@@ -17,7 +17,16 @@ disable-model-invocation: true
 위에서부터 하고, 후보가 3~5개 모이면 멈춘다.
 
 1. web_search 1~2회: "<필요한 것> open source <언어> library". 이름과 저장소 주소만 모은다.
-2. GitHub 저장소 검색 API. 키 없이 IP당 분당 10회, 검색당 결과 최대 1,000개. 먼저 남은 횟수를 본다(이 호출은 한도에 들지 않는다).
+2. awesome 목록. 주제(GitHub topic 형식, 예: `anomaly-detection`)로 목록을 찾고, 맞는 것 하나를 받아 README에서 고른다. 키 없이 시간당 5,000회라 GitHub 한도가 바닥났을 때도 쓴다.
+
+```bash
+curl -s "https://awesome.ecosyste.ms/api/v1/lists?topic=<주제>" \
+ | python3 -c 'import json,sys;[print(l.get("projects_count"),l["url"],(l.get("description") or "")[:80],sep="\t") for l in json.load(sys.stdin)]'
+git clone --depth 1 <목록 주소> /tmp/refs/awesome-<주제> && grep -n -i "<키워드>" /tmp/refs/awesome-<주제>/README.md | head -40
+```
+
+   목록 항목은 검증되지 않은 링크다. 후보 표에 올리기 전에 별·최근 push·라이선스를 5의 ecosyste.ms로 다시 본다. 이 API가 막히면 awesome 목록의 목록(`https://github.com/sindresorhus/awesome`)을 받아 grep한다.
+3. GitHub 저장소 검색 API. 키 없이 IP당 분당 10회, 검색당 결과 최대 1,000개. 먼저 남은 횟수를 본다(이 호출은 한도에 들지 않는다).
 
 ```bash
 curl -s https://api.github.com/rate_limit | python3 -c 'import json,sys;print(json.load(sys.stdin)["resources"]["search"])'
@@ -26,9 +35,9 @@ curl -s "https://api.github.com/search/repositories?q=<키워드>+language:<언�
 ```
 
    코드 검색 API(`/search/code`)와 gh CLI는 로그인이 필요해 쓰지 않는다.
-3. 패키지 레지스트리: `npm search --json --searchlimit=10 <키워드>`, `npm view <패키지> repository.url license version`, 파이썬은 `python3 -m pip index versions <패키지>`.
-4. GitHub 한도가 바닥나면 ecosyste.ms로 메타데이터만 본다(키 없이 시간당 5,000회): `curl -s "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/<owner>%2F<repo>"`
-5. MCP 탭에 grep.app MCP가 등록돼 있으면 "다른 구현은 이 부분을 어떻게 짰나"를 코드 단위로 찾을 때만 쓴다.
+4. 패키지 레지스트리: `npm search --json --searchlimit=10 <키워드>`, `npm view <패키지> repository.url license version`, 파이썬은 `python3 -m pip index versions <패키지>`.
+5. GitHub 한도가 바닥나면 ecosyste.ms로 메타데이터만 본다(키 없이 시간당 5,000회): `curl -s "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/<owner>%2F<repo>"`
+6. MCP 탭에 grep.app MCP가 등록돼 있으면 "다른 구현은 이 부분을 어떻게 짰나"를 코드 단위로 찾을 때만 쓴다.
 
 후보 표를 사용자에게 보이고 받을 것을 확인받는다.
 
