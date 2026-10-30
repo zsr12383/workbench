@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 목적은 사용자가 자기 작업을 짧고 정확하게 설명할 수 있게 미리 정리해 두는 것이다. 답은 짧고 구체적이어야 한다.
 
-1. 읽는다: docs/EXPLAIN.md, docs/DECISIONS.md, docs/INTERVIEW.md, docs/REVIEW.md, docs/research/, docs/SPEC.md의 기본 품질과 범위 밖, `git log --stat`, README 필수조건, 핵심 소스 파일. 빠진 커밋 설명이 있으면, 메인 세션이면 EXPLAIN.md를 먼저 채우고, 곁일 세션이면 EXPLAIN.md는 두고 QA-PREP.md 맨 위에 '빠진 설명' 목록으로 적는다.
+1. 읽는다: docs/EXPLAIN.md, docs/DECISIONS.md, docs/INTERVIEW.md, docs/REVIEW.md, docs/research/, docs/SPEC.md의 기본 품질과 범위 밖, `git log --stat`, README 필수조건, 핵심 소스 파일. 코드를 바꾼 커밋 중 EXPLAIN 설명이 빠진 것이 있으면, 메인 세션이면 EXPLAIN.md를 먼저 채우고, 곁일 세션이면 EXPLAIN.md는 두고 QA-PREP.md 맨 위에 '빠진 설명' 목록으로 적는다.
 2. 리뷰어가 물을 만한 지점에서 질문 6개를 만든다. 질문은 결과물과 작업 기록(커밋, 문서, 대화)에서 나온다고 본다. 축마다 1~2개씩 섞는다.
    - 필수조건 X를 어디서 어떻게 만족시켰나
    - 인터뷰로 가설이 어떻게 바뀌었고, 어느 방향을 왜 골랐나
