@@ -1,6 +1,6 @@
 ---
 name: oss-scout
-description: 과제에 쓸 공개 오픈소스를 키 없이 찾고(웹 검색, awesome 목록, GitHub 검색 API, 패키지 레지스트리), 후보를 /tmp/refs에 받아 서브에이전트로 나눠 읽힌 뒤, 검증한 비교를 docs/REFERENCES.md에 남긴다. 사용자가 $oss-scout로 부를 때만 쓴다.
+description: 프로젝트에 쓸 공개 오픈소스를 키 없이 찾고(웹 검색, awesome 목록, GitHub 검색 API, 패키지 레지스트리), 후보를 /tmp/refs에 받아 서브에이전트로 나눠 읽힌 뒤, 검증한 비교를 docs/REFERENCES.md에 남긴다. 사용자가 $oss-scout로 부를 때만 쓴다.
 disable-model-invocation: true
 ---
 

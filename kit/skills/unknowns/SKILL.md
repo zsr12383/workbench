@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## 0. 범위
 
-- `$unknowns scan`: README와 과제 안내만 보고 넓게 점검한다. 15분, 결과 40줄 이내.
+- `$unknowns scan`: README와 요구 문서만 보고 넓게 점검한다. 15분, 결과 40줄 이내.
 - `$unknowns`: docs/SPEC.md와 docs/PLAN.md 초안을 기준으로 표적 조사한다. 10분, 항목 8개 이내.
 - 사용자가 주제를 주면 그 주제만 본다.
 

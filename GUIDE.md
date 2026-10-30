@@ -1,10 +1,10 @@
 # 진행 안내
 
-workbench를 설치한 과제에서 무엇을 어떤 순서로 부르는지 정리했다. 이 파일은 설치해도 작업 폴더에 복사되지 않는다. 작업 중에는 `less /tmp/kit/GUIDE.md`로 본다.
+workbench를 설치한 프로젝트에서 무엇을 어떤 순서로 부르는지 정리했다. 이 파일은 설치해도 작업 폴더에 복사되지 않는다. 작업 중에는 `less /tmp/kit/GUIDE.md`로 본다.
 
 ## 1. 셋업 (작업을 시작한 직후)
 
-터미널은 셋을 연다. 1번은 서버 전용, A는 메인 Codex, B는 곁일 Codex다. 아래는 1번에서 친다.
+터미널은 셋을 연다. 1번은 서버 전용, A는 메인 Codex, B는 곁일 Codex다. 아래는 1번에서, 작업 폴더(Codex를 띄울 폴더가 정해져 있으면 그 폴더)로 `cd`한 뒤 친다. A·B의 `codex`도 그 폴더에서 띄운다. kit은 /tmp/kit에 받고 작업 폴더에는 clone하지 않는다. 작업 폴더가 그대로 결과물이다.
 
 ```bash
 git clone --depth 1 https://github.com/zsr12383/workbench /tmp/kit
@@ -12,7 +12,7 @@ bash /tmp/kit/env-check.sh --install    # 도구, 레지스트리, GitHub 남은
 git rev-parse --git-dir >/dev/null 2>&1 || git init -q             # 저장소가 아니면 만든다
 git config user.email >/dev/null || git config user.email dev@localhost
 git config user.name >/dev/null || git config user.name dev        # 커밋 이름이 없으면 커밋이 실패한다
-bash /tmp/kit/install.sh .              # 화면이 있는 과제면 --profile ui
+bash /tmp/kit/install.sh .              # 화면이 있는 프로젝트면 --profile ui
 ```
 
 git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소가 아닌 폴더는 Codex가 읽기 전용으로 시작할 수 있다.
@@ -42,7 +42,7 @@ git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소
 | 반복 구현 | PLAN 작업 반복. 맥락이 무거우면 커밋 직후 `$handoff` → `/new` | 새로 모르는 게 생기면 `$unknowns` | 커밋들 |
 | 기능 동결 | 새 기능을 더하지 않는다. `$spec-check`, 리뷰 지적 수정 | `$review-gate` | REVIEW.md |
 | 정리 | README·EXPLAIN 정리, 최종 커밋 | `$explain` | QA-PREP.md |
-| 작업을 끝마치기 10분 전 | PROMPTS의 '제출 점검' → 미리보기에서 핵심 흐름 → 에디터 '저장됨' 확인 | 종료 | — |
+| 작업을 끝마치기 10분 전 | PROMPTS의 '마무리 점검' → 미리보기에서 핵심 흐름 → 에디터 '저장됨' 확인 | 종료 | — |
 
 - B는 코드·SPEC·PLAN·DECISIONS·EXPLAIN을 고치지 않고 커밋하지 않는다. 커밋은 A만 한다.
 - 결정이 몰리는 설계는 `/plan`에서 한다. 객관식 질문 창으로 선택지와 추천을 받을 수 있다.
@@ -75,6 +75,7 @@ git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소
 | 맥락이 무겁다 | 커밋 직후라면 `$handoff` → `/new`, 작업 도중이면 `/compact` |
 | 결정이 모호하다 | 되돌리기 비싼 것(범위, 구조, 데이터 모델, 제약)만 묻는다. 싼 것은 기본값으로 진행하고 DECISIONS에 가정으로 남긴다 |
 | 외부 코드가 필요하다 | /tmp/refs에 받는다. 작업 폴더에는 넣지 않는다 |
+| 작업 폴더 밖에 쓸 수 없다 | kit을 `.workbench`에 clone → `bash .workbench/install.sh .` → `echo .workbench >> .git/info/exclude`. 이 안내는 `less .workbench/GUIDE.md`로 보고, 마무리 점검 때 `rm -rf .workbench` |
 
 ### MCP
 
