@@ -2,6 +2,21 @@
 
 workbench를 설치한 프로젝트에서 무엇을 어떤 순서로 부르는지 정리했다. 이 파일은 설치해도 작업 폴더에 복사되지 않는다. 작업 중에는 `less /tmp/kit/GUIDE.md`로 본다.
 
+## 0. 가볍게 가는 길
+
+시간이 빠듯하거나 단계 사이에서 자꾸 막히면 왼쪽 칸만 쓴다.
+
+| 꼭 쓴다 | 필요할 때만 | 생략해도 된다 |
+| --- | --- | --- |
+| AGENTS.md 규칙 | B의 `$unknowns scan` 한 번 | B 세션 자체(A 하나로 진행) |
+| PROMPTS: 부트스트랩 → 기본 품질과 범위 밖 → 설계·분해 → 계획 반영 → 마무리 점검 | `$review-gate quick` 1~2번(막히면 `/review`) | `$oss-scout`(필요한 부품이 확실할 때만) |
+| `$interview` | `$handoff`(맥락이 무거울 때) | `/goal` |
+| `$spec-check`(관문 A·C) | | 표적 조사 `$unknowns` |
+| `$explain`(마지막 20분) | | |
+
+- 스킬 이름이 기억나지 않으면 말로 부른다: "인터뷰 스킬의 재진술만", "적대적 리뷰어 하나만".
+- 막히면 "원인부터 찾고, 가설을 하나씩 검증해"라고 한다.
+
 ## 1. 셋업 (작업을 시작한 직후)
 
 터미널은 셋을 연다. 1번은 서버 전용, A는 메인 Codex, B는 곁일 Codex다. 아래는 1번에서, 작업 폴더(Codex를 띄울 폴더가 정해져 있으면 그 폴더)로 `cd`한 뒤 친다. A·B의 `codex`도 그 폴더에서 띄운다. kit은 /tmp/kit에 받고 작업 폴더에는 clone하지 않는다. 작업 폴더가 그대로 결과물이다.
@@ -20,12 +35,12 @@ git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소
 | 순서 | 어디서 | 할 일 | 보여야 할 것 |
 | --- | --- | --- | --- |
 | 1 | A | `codex` → 폴더 신뢰 → `/status` → `/model`(추론 강도 Medium) → `/skills` | 승인 정책·샌드박스·모델, 스킬 8개 |
-| 2 | A | docs/PROMPTS.md의 '부트스트랩' | SPEC에 필수조건, 모르는 것 3개 이하 |
+| 2 | A | docs/PROMPTS.md의 '부트스트랩' | SPEC에 필수조건, 첫 커밋, `git status` 깨끗 |
 | 3 | B | `codex` → `/model` → 'B 탭 시작' + `$unknowns scan` | docs/research/에 결과 파일 |
 | 4 | A | `$interview` → 첫 라운드 질문을 담당자에게 | 질문 3개 이하 |
 
 - 지시문은 에디터에서 docs/PROMPTS.md를 열어 복사하고, 터미널에는 Ctrl+Shift+V로 붙인다.
-- 부트스트랩이 끝나면 A가 규칙·문서 뼈대를 첫 커밋으로 남긴다.
+- 부트스트랩이 규칙·문서 뼈대·제공 데이터를 첫 커밋으로 남긴다. 추적 안 된 파일이 남으면 B의 리뷰·점검이 '작업 트리 변경 중'으로 보고 테스트를 건너뛴다.
 - 승인 창에서는 '이 세션 동안 허용'이나 '이 명령으로 시작하는 것은 항상 허용'을 고른다.
 - Codex가 일하는 중에 Enter로 보낸 말은 바로 끼어든다. 끝난 뒤에 보내려면 대기열 키(기본 Tab)를 쓴다.
 - 추론 강도는 Medium이 기본이다. 계획과 어려운 디버깅만 High로 올리고, Extra High는 막혔을 때만 쓴다(토큰이 약 2배). 올리기 전에 완료 조건이나 검증 명령이 빠지지 않았는지 먼저 본다.
@@ -34,9 +49,9 @@ git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소
 
 | 단계 | A (메인) | B (곁일) | 남는 것 |
 | --- | --- | --- | --- |
-| 정의 | `$interview` 라운드. 답은 `[실무자] …`, 내 생각은 `[내 메모] …`로 붙여 넣는다 | scan 결과 정리 | INTERVIEW.md, SPEC 초안 |
-| 범위 합의 | `/plan`에서 PROMPTS의 '기본 품질과 범위 밖' → SPEC 확정 → `$spec-check` | SPEC 초안이 나오면 `$unknowns` | SPEC, docs/research/ |
-| 설계·분해 | `/plan` → 승인 → docs/PLAN.md로 옮겨 커밋. B 결과는 PROMPTS의 'B 결과를 A에 반영' | 가져다 쓸 코드가 필요하면 `$oss-scout` | PLAN.md, DECISIONS.md, REFERENCES.md |
+| 정의 | `$interview` 라운드. 답은 `[실무자] …`, 내 생각은 `[내 메모] …`로 붙여 넣는다 | 인터뷰 2라운드쯤 `$unknowns`(INTERVIEW.md 기준). README가 짧을수록 일찍 | INTERVIEW.md, SPEC 초안 |
+| 범위 합의 | `/plan`에서 PROMPTS의 '기본 품질과 범위 밖' → 고르기 → 'Yes, implement'(문서만 고친다) → `$spec-check` | SPEC 초안이 나오면 `$unknowns` | SPEC, docs/research/ |
+| 설계·분해 | `/plan`에서 PROMPTS의 '설계·분해'(research/·REFERENCES도 읽는다) → 'No, stay' → Shift+Tab, '계획 반영' | 비싼 부품이 보이면 설계·분해 전에 `$oss-scout <부품>`. 런타임이 미정이면 "브라우저·Node 각 1개" | PLAN.md, DECISIONS.md, REFERENCES.md |
 | 첫 동작판 | 작업 하나씩: 테스트 → 커밋(EXPLAIN 4줄을 같은 커밋에) | — | 처음부터 끝까지 돌아가는 최소판 |
 | 중간 점검 | 지적은 PLAN의 새 작업으로 | `$review-gate quick` | REVIEW.md |
 | 반복 구현 | PLAN 작업 반복. 맥락이 무거우면 커밋 직후 `$handoff` → `/new` | 새로 모르는 게 생기면 `$unknowns` | 커밋들 |
@@ -44,8 +59,10 @@ git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소
 | 정리 | README·EXPLAIN 정리, 최종 커밋 | `$explain` | QA-PREP.md |
 | 작업을 끝마치기 10분 전 | PROMPTS의 '마무리 점검' → 미리보기에서 핵심 흐름 → 에디터 '저장됨' 확인 | 종료 | — |
 
-- B는 코드·SPEC·PLAN·DECISIONS·EXPLAIN을 고치지 않고 커밋하지 않는다. 커밋은 A만 한다.
-- 결정이 몰리는 설계는 `/plan`에서 한다. 객관식 질문 창으로 선택지와 추천을 받을 수 있다.
+- B는 코드·SPEC·PLAN·DECISIONS·EXPLAIN을 고치지 않고 커밋하지 않는다. 커밋은 A만 하고, B가 쓴 docs 파일도 A의 다음 커밋에 함께 들어간다.
+- B는 곁일 하나가 끝나면 `/new`로 새로 시작한다. 이전 곁일의 결과는 파일에 있고, 한 세션에 곁일이 쌓이면 요청마다 그 맥락을 다시 보내 토큰이 크게 는다.
+- `/plan`은 스킬이 아니라 모드 전환이다. `/plan`만 치고 Enter → 지시문 붙여넣기. Plan 모드는 파일을 쓰지 않고 객관식 질문 창으로 묻는다. 계획이 나오면 'Implement this plan?'에서 'No, stay in Plan mode'를 고르고 Shift+Tab으로 Default에 돌아와 문서 반영을 시킨다('Yes'는 바로 코딩을 시작한다).
+- B의 조사 결과 중 '넘길 질문'은 인터뷰가 라운드마다 알아서 집어 간다. 나머지(제약·결정 지점)는 '설계·분해' 지시문이 research/를 함께 읽어 반영하므로 따로 붙이지 않는다. PLAN이 생긴 뒤 새로 나온 B 결과만 파일 끝의 'A에 줄 지시문'을 A에 붙인다.
 - 정리 단계에서는 QA-PREP.md 맨 위의 외울 카드를 소리 내 읽어 본다.
 
 ## 3. 부르는 말
@@ -53,13 +70,15 @@ git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소
 | 스킬 | 탭 | 예 |
 | --- | --- | --- |
 | `$interview` | A | `$interview`. 답을 붙일 때 `[실무자] …`, `[내 메모] …` |
-| `$unknowns` | B | `$unknowns scan`, 나중에 `$unknowns` |
+| `$unknowns` | B | `$unknowns scan`, 인터뷰 뒤 `$unknowns`, 주제 하나면 `$unknowns <주제>` |
 | `$grill-me` | A | `$grill-me 질문은 5개까지, 문서에 답이 있으면 먼저 찾아라` |
 | `$oss-scout` | B | `$oss-scout <필요한 것 한 문장>` |
 | `$spec-check` | A·B | `$spec-check` |
 | `$review-gate` | B | `$review-gate quick`, `$review-gate` |
 | `$handoff` | A | `$handoff` → `/new` → "docs/HANDOFF.md부터 읽고 이어가라" |
 | `$explain` | B | `$explain` |
+
+스킬 뒤에 붙인 말은 스킬 절차보다 우선한다. 바꾼 것은 결과 맨 위 '인자 반영:' 줄에 나온다. 예: `$interview 실무자 없음, 문서만으로`, `$explain 질문 10개, 답은 3문장`, `$spec-check C1~C3만`, `$unknowns scan 데이터 형식만`, `$review-gate quick 보안 관점으로`.
 
 ## 4. 막힐 때
 

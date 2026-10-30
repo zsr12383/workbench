@@ -1,7 +1,7 @@
 # 작업 규칙
 
 - 목표: README 필수조건 충족. 기준은 docs/SPEC.md의 숫자 성공 기준.
-- 계획(docs/PLAN.md)을 먼저 보여 주고, 내 승인 전에는 코드를 쓰지 마라. Plan 모드에서 승인된 계획은 구현 전에 docs/PLAN.md로 옮기고 커밋한다.
+- 코드·의존성·설정을 바꾸기 전에 계획(docs/PLAN.md)을 보여 주고 내 승인을 받는다. Plan 모드에서 승인된 계획은 구현 전에 docs/PLAN.md로 옮기고 커밋한다. docs/와 AGENTS.md 빈칸을 채우는 문서 작업은 승인 없이 바로 한다.
 - 한 번에 PLAN 작업 하나. 끝나면 테스트 실행 → 결과 첨부 → 커밋(무엇·왜).
 - 승인된 PLAN 작업 안에서는 파일 수정, 테스트·린트 실행, 실패를 고치고 다시 돌리기를 묻지 않고 한다.
 - 완료 보고: 바꾼 파일, 실행한 명령과 결과, 남은 위험. 돌리지 못한 확인은 "미확인"과 이유, 대신 한 확인을 적는다.
@@ -47,15 +47,16 @@
 - A는 인터뷰·설계·구현·커밋을 맡는다. B는 조사·리뷰·설명 준비처럼 A를 막지 않고 옆에서 도는 일을 맡는다.
 - "이 세션은 곁일 세션(B)이다"로 시작한 세션은 코드·SPEC·PLAN·DECISIONS·EXPLAIN을 고치지 않고 커밋하지 않는다. 쓰는 곳은 docs/research/, docs/REVIEW.md, docs/REFERENCES.md, docs/QA-PREP.md뿐이다.
 - B는 git을 읽기만 한다(`git --no-optional-locks status`, diff, log, show). A가 그사이 코드를 고치고 있을 수 있으니, 리뷰·점검할 코드는 작업 트리가 아니라 시작할 때 고정한 커밋에서 읽는다(`git show <해시>:<경로>`). README·SPEC·PLAN 같은 문서는 작업 트리에서 읽어도 된다.
-- B가 필요한 맥락은 파일에서 얻는다. 새 세션(`codex`)으로 띄우는 것이 기본이고, A의 대화가 꼭 필요할 때만 `codex fork --last`로 띄운다. 리뷰는 fork하지 않는다.
+- B가 쓴 docs 파일(research/, REVIEW.md, REFERENCES.md, QA-PREP.md)은 A가 다음 커밋에 함께 넣는다.
+- B가 필요한 맥락은 파일에서 얻는다. 곁일 하나가 끝나면 `/new`로 새로 시작한다. 새 세션(`codex`)으로 띄우는 것이 기본이고, A의 대화가 꼭 필요할 때만 `codex fork --last`로 띄운다. 리뷰는 fork하지 않는다.
 
 ## 부를 스킬 (모두 직접 호출)
 
-내가 `$이름`으로 스킬을 부르면 `.agents/skills/<이름>/SKILL.md`를 읽고 그대로 따른다.
+내가 `$이름`으로 부르면 스킬 본문이 대화에 들어온다. 그대로 따르고, 본문이 보이지 않을 때만 `.agents/skills/<이름>/SKILL.md`를 읽는다.
 
 - (A) $interview: 실무자 인터뷰 질문 라운드와 답 반영(SPEC·DECISIONS·INTERVIEW.md)
 - (A) $handoff: HANDOFF.md 작성 후 새 세션으로
-- (B) $unknowns: 모르는 것 목록과 조사, docs/research/ (`scan`은 착수 직후)
+- (B) $unknowns: 모르는 것 목록과 조사, docs/research/ (`scan`은 착수 직후, 인자 없이는 INTERVIEW·SPEC 기준)
 - (B) $review-gate: 새 맥락 리뷰어(요구·엣지, 적대적, 해당되면 보안) 병렬, quick은 1개
 - (B) $oss-scout: 공개 오픈소스 찾기, 서브에이전트로 나눠 읽기, REFERENCES.md
 - (B) $explain: 작업 설명 준비(예상 질문, 3단 답, 외울 카드)

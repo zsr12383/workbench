@@ -4,6 +4,8 @@ description: 작업 기록(EXPLAIN·DECISIONS·INTERVIEW·REVIEW·research, git 
 disable-model-invocation: true
 ---
 
+부를 때 `$explain` 뒤에 붙인 말은 이 절차보다 우선한다. 범위·개수·시간·형식을 바꾸거나 단계를 빼라는 말이면 그대로 따르고, 결과 맨 위에 '인자 반영: <바꾼 것>' 한 줄을 쓴다. 상황이 절차의 전제와 다르면(문서·실무자·SPEC·커밋이 없음 등) 가장 가까운 대안으로 진행하고 같은 줄에 적는다. 대안이 없거나 절차가 멈추라고 정한 곳에서만 묻는다.
+
 목적은 사용자가 자기 작업을 짧고 정확하게 설명할 수 있게 미리 정리해 두는 것이다. 답은 짧고 구체적이어야 한다.
 
 1. 읽는다: docs/EXPLAIN.md, docs/DECISIONS.md, docs/INTERVIEW.md, docs/REVIEW.md, docs/research/, docs/SPEC.md의 기본 품질과 범위 밖, `git log --stat`, README 필수조건, 핵심 소스 파일. 빠진 커밋 설명이 있으면, 메인 세션이면 EXPLAIN.md를 먼저 채우고, 곁일 세션이면 EXPLAIN.md는 두고 QA-PREP.md 맨 위에 '빠진 설명' 목록으로 적는다.
