@@ -7,7 +7,7 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"   # no approval prompts, .git and network included
 web_search = "live"                   # fresh web results instead of the cached index
-model_reasoning_effort = "medium"     # raise to "xhigh" only for planning, hard debugging, reviews
+model_reasoning_effort = "medium"     # "high" for planning and hard debugging; "xhigh" only when stuck (about 2x tokens)
 
 [agents]
 max_concurrent_threads_per_session = 4   # room for the three $review-gate reviewers at once

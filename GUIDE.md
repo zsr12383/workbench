@@ -9,8 +9,13 @@ workbench를 설치한 과제에서 무엇을 어떤 순서로 부르는지 정�
 ```bash
 git clone --depth 1 https://github.com/zsr12383/workbench /tmp/kit
 bash /tmp/kit/env-check.sh --install    # 도구, 레지스트리, GitHub 남은 한도, npm·pip 설치
+git rev-parse --git-dir >/dev/null 2>&1 || git init -q             # 저장소가 아니면 만든다
+git config user.email >/dev/null || git config user.email dev@localhost
+git config user.name >/dev/null || git config user.name dev        # 커밋 이름이 없으면 커밋이 실패한다
 bash /tmp/kit/install.sh .              # 화면이 있는 과제면 --profile ui
 ```
+
+git 저장소와 커밋 이름은 Codex를 띄우기 전에 맞춘다. 저장소가 아닌 폴더는 Codex가 읽기 전용으로 시작할 수 있다.
 
 | 순서 | 어디서 | 할 일 | 보여야 할 것 |
 | --- | --- | --- | --- |
@@ -22,6 +27,8 @@ bash /tmp/kit/install.sh .              # 화면이 있는 과제면 --profile u
 - 지시문은 에디터에서 docs/PROMPTS.md를 열어 복사하고, 터미널에는 Ctrl+Shift+V로 붙인다.
 - 부트스트랩이 끝나면 A가 규칙·문서 뼈대를 첫 커밋으로 남긴다.
 - 승인 창에서는 '이 세션 동안 허용'이나 '이 명령으로 시작하는 것은 항상 허용'을 고른다.
+- Codex가 일하는 중에 Enter로 보낸 말은 바로 끼어든다. 끝난 뒤에 보내려면 대기열 키(기본 Tab)를 쓴다.
+- 추론 강도는 Medium이 기본이다. 계획과 어려운 디버깅만 High로 올리고, Extra High는 막혔을 때만 쓴다(토큰이 약 2배). 올리기 전에 완료 조건이나 검증 명령이 빠지지 않았는지 먼저 본다.
 
 ## 2. 단계 흐름
 
@@ -58,7 +65,9 @@ bash /tmp/kit/install.sh .              # 화면이 있는 과제면 --profile u
 
 | 증상 | 할 일 |
 | --- | --- |
-| 승인 창이 자주 뜬다 | 의존성 설치는 초반에 한 번 승인해 끝낸다. 자주 쓰는 명령(`ls`, `cat`, `sed -n`, `rg`, `git status`·`diff`·`log`, 테스트 명령)은 '이 명령으로 시작하는 것은 항상 허용'으로 등록한다 |
+| 승인 창이 자주 뜬다 | 의존성 설치는 초반에 한 번 승인해 끝낸다. 자주 쓰는 명령(`ls`, `cat`, `sed -n`, `rg`, `git status`·`diff`·`log`·`add`·`commit`, 테스트 명령)은 '이 명령으로 시작하는 것은 항상 허용'으로 등록한다. `.git`은 샌드박스에서 읽기 전용이라 커밋마다 승인을 묻는다 |
+| 방금 변경을 되돌리고 싶다 | Esc 되감기는 대화만 되돌리고 파일은 그대로다. 커밋 전이면 `git restore <파일>`(새 파일은 `git status`로 보고 지운다), 커밋 뒤면 `git revert <해시>`. 그다음 Codex에 "되돌렸다"고 알린다 |
+| `$review-gate`가 돌지 않는다 | B에서 `/review` → 커밋을 고르거나 "`<기준>..<끝>` diff를 SPEC 기준으로 보라"고 직접 지시. 결과는 REVIEW.md에 옮긴다 |
 | 맡긴 작업이 멈춘 것 같다 | 승인 대기인지 먼저 본다. 승인 창은 기다리기만 해서는 진행되지 않는다 |
 | 읽기 명령까지 실패한다(샌드박스 오류) | 승인해서 실행한다. 계속 막히면 필요한 파일을 내가 열어 보여 준다 |
 | `$이름`에 반응이 없다 | `/skills`로 확인하고, 없으면 `/new`. 그래도 안 되면 "`.agents/skills/<이름>/SKILL.md`를 읽고 따라라" |
@@ -66,6 +75,19 @@ bash /tmp/kit/install.sh .              # 화면이 있는 과제면 --profile u
 | 맥락이 무겁다 | 커밋 직후라면 `$handoff` → `/new`, 작업 도중이면 `/compact` |
 | 결정이 모호하다 | 되돌리기 비싼 것(범위, 구조, 데이터 모델, 제약)만 묻는다. 싼 것은 기본값으로 진행하고 DECISIONS에 가정으로 남긴다 |
 | 외부 코드가 필요하다 | /tmp/refs에 받는다. 작업 폴더에는 넣지 않는다 |
+
+### MCP
+
+MCP가 없어도 web_search, `npm view <패키지> version`, `--help`, `node_modules/<패키지>/README.md`로 충분하다. 붙일 때는 환경이 정한 방법으로 등록한다.
+
+| MCP | 쓰나 | 이유 |
+| --- | --- | --- |
+| Context7 (`https://mcp.context7.com/mcp`) | 쓴다 | 키 없이 라이브러리 문서를 찾는다 |
+| grep.app (`https://mcp.grep.app`) | 선택 | 키 없는 공개 코드 검색. `$oss-scout`에서 다른 구현을 찾을 때만 |
+| Playwright, 브라우저 조작류 | 쓰지 않는다 | 에이전트가 화면을 직접 조작한다. E2E는 테스트 파일로 |
+| GitHub | 쓰지 않는다 | 개인 토큰이 필요하다 |
+| 개인 계정 커넥터(Notion, 메일·드라이브 등), 배포(Vercel 등) | 쓰지 않는다 | 개인 계정이 필요하거나 작업물을 밖으로 보낸다 |
+| DeepWiki처럼 다른 AI가 답을 만드는 서버 | 쓰지 않는다 | 다른 AI 모델을 거친다 |
 
 ### 서버를 0.0.0.0으로 띄우기
 

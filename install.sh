@@ -108,4 +108,10 @@ EOF
   fi
 fi
 
+[ ! -e "$PROJECT/AGENTS.override.md" ] || echo "  note   AGENTS.override.md exists and hides AGENTS.md from Codex: merge or rename it"
+if command -v git >/dev/null; then
+  git -C "$PROJECT" rev-parse --git-dir >/dev/null 2>&1 || echo "  note   not a git repository yet: git init before starting Codex"
+  [ -n "$(git -C "$PROJECT" config user.email 2>/dev/null)" ] || echo "  note   git user.email is not set: commits will fail until it is"
+fi
+
 echo "done. Start Codex now (or /new if it was already running) so AGENTS.md and the skills are loaded; check with /skills."
