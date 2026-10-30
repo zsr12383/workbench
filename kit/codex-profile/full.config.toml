@@ -1,0 +1,19 @@
+# Full-access Codex profile. Layered on top of the existing config.toml with `codex -p full`,
+# so the lines already there (model provider, proxy) stay untouched.
+# Verified on Codex 0.165.0: the session reports danger-full-access, network enabled, approval never.
+# Some environments forbid bypassing their blocks by changing tools, paths or settings, or record AI tool
+# settings as work history. Use this only where changing Codex settings is explicitly allowed.
+
+approval_policy = "never"
+sandbox_mode = "danger-full-access"   # no approval prompts, .git and network included
+web_search = "live"                   # fresh web results instead of the cached index
+model_reasoning_effort = "medium"     # raise to "xhigh" only for planning, hard debugging, reviews
+
+[agents]
+max_concurrent_threads_per_session = 4   # room for the three $review-gate reviewers at once
+
+# Less permissive alternative: keep the workspace sandbox but allow network.
+# sandbox_mode = "workspace-write"
+# approval_policy = "on-request"
+# [sandbox_workspace_write]
+# network_access = true

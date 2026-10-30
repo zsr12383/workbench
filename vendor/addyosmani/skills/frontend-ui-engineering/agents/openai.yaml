@@ -1,0 +1,5 @@
+interface:
+  display_name: "Frontend UI Engineering"
+  short_description: "Component, state, a11y and responsive rules"
+policy:
+  allow_implicit_invocation: false

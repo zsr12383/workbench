@@ -1,0 +1,5 @@
+interface:
+  display_name: "Doubt-Driven Development"
+  short_description: "Fresh-context adversarial review of a decision"
+policy:
+  allow_implicit_invocation: false

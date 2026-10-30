@@ -1,0 +1,6 @@
+interface:
+  display_name: "Review Gate"
+  short_description: "Three fresh-context reviewers on SPEC and a diff"
+  default_prompt: "Use $review-gate on the commits since the last gate."
+policy:
+  allow_implicit_invocation: false

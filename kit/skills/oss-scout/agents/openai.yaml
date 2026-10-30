@@ -1,0 +1,6 @@
+interface:
+  display_name: "OSS Scout"
+  short_description: "Find public repos without keys, fan out reading, record"
+  default_prompt: "Use $oss-scout to find and compare open-source options for this need."
+policy:
+  allow_implicit_invocation: false

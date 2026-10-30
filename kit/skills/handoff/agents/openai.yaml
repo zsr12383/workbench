@@ -1,0 +1,6 @@
+interface:
+  display_name: "Handoff"
+  short_description: "Write docs/HANDOFF.md for the next session"
+  default_prompt: "Use $handoff to write docs/HANDOFF.md before I start a new session."
+policy:
+  allow_implicit_invocation: false

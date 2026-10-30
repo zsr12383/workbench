@@ -1,0 +1,5 @@
+interface:
+  display_name: "Constraint-Driven Development"
+  short_description: "Write the quality floor down and guard it"
+policy:
+  allow_implicit_invocation: false

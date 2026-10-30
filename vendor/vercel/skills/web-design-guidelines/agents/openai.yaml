@@ -1,0 +1,5 @@
+interface:
+  display_name: "Web Design Guidelines"
+  short_description: "Review UI files against ~100 interface rules"
+policy:
+  allow_implicit_invocation: false
